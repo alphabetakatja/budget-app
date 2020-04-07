@@ -1,6 +1,7 @@
 // BUDGET CONTROLLER
 let budgetController = (function() {
   // data model for expenses and incomes
+
   let Expense = function(id, description, value) {
     this.id = id;
     this.description = description;
@@ -12,9 +13,16 @@ let budgetController = (function() {
     this.value = value;
   };
 
-  // Expense.protoype.getExpense() = function() {
-  //
-  // }
+  let data = {
+    allItems: {
+      exp: [],
+      inc: []
+    },
+    totals: {
+      exp: 0,
+      inc: 0
+    }
+  };
 })();
 
 // UI CONTROLLER
