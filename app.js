@@ -76,7 +76,7 @@ let UIController = (function() {
       return {
         type: document.querySelector(DOMstrings.inputType).value,
         description: document.querySelector(DOMstrings.inputDescription).value,
-        value: document.querySelector(DOMstrings.inputValue).value
+        value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
       };
     },
     addListItem: function(obj, type) {
@@ -109,9 +109,9 @@ let UIController = (function() {
       fieldsArray.forEach(function(current, index, arr)  {
         current.value = '';
       });
-
       // Set the focus on the first element of the array
       fieldsArray[0].focus();
+
     },
     getDOMstrings: function() {
       return DOMstrings;
@@ -137,6 +137,16 @@ let appController = (function(budgetCtrl, UICtrl) {
     });
   };
 
+  let updateBudget = function() {
+
+    // 1. Calculate the budget
+
+    // 2. Return the budget
+
+    // 3. Display the budget on the UI
+
+  };
+
   let ctrlAddItem = function() {
     let input, newItem;
     // 1. Get the field input data
@@ -151,9 +161,9 @@ let appController = (function(budgetCtrl, UICtrl) {
     // 4. Clear Input fields
     UICtrl.clearInputFields();
 
-    // 4. Calculate the budget
+    // 5. Calculate & update the budget
+    updateBudget();
 
-    // 5. Display the budget on the UI
   };
 
   return {
