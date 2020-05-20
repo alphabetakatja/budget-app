@@ -109,6 +109,9 @@ let UIController = (function() {
       fieldsArray.forEach(function(current, index, arr)  {
         current.value = '';
       });
+
+      // Set the focus on the first element of the array
+      fieldsArray[0].focus();
     },
     getDOMstrings: function() {
       return DOMstrings;
