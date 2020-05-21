@@ -63,6 +63,21 @@ let budgetController = (function() {
       // Return the new element
       return newItem;
     },
+    deleteItem: function(type, id) {
+      let ids, index;
+      
+      // We are creating a new array with all the ids of expenses and incomes 
+      ids = data.allItems[type].map(function(current) {
+        return current.id;
+      });
+
+      index = ids.indexOf(id);
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+
+    },
     calculateBudget: function() {
 
       // Calculate the total sum of income and expenses
@@ -154,6 +169,9 @@ let UIController = (function() {
 
       // 3. Insert the HTML into the DOM
       document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
+    },
+    deleteListItem: function() {
+
     },
     clearInputFields: function() {
       let fields, fieldsArray;
@@ -249,10 +267,11 @@ let appController = (function(budgetCtrl, UICtrl) {
       // inc-1 it returns an array with the type and a number
       splitID = itemID.split('-');
       type = splitID[0];
-      ID = splitID[1];
+      ID = parseInt(splitID[1]);
 
       // 1. Delete the item from the data structure
-      
+      budgetCtrl.deleteItem(type, ID);
+
       // 2. Delete item from the UI
 
       // 3. Update and show the new budget 
