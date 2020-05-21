@@ -1,20 +1,7 @@
 // BUDGET CONTROLLER
 let budgetController = (function() {
 
-  let data = {
-    allItems: {
-      exp: [],
-      inc: []
-    },
-    totals: {
-      exp: 0,
-      inc: 0
-    },
-    budget: 0,
-    percentage: -1
-  };
-
-  // data model for expenses and incomes
+  // Data model for expenses and incomes
   let Expense = function(id, description, value) {
     this.id = id;
     this.description = description;
@@ -35,12 +22,24 @@ let budgetController = (function() {
     data.totals[type] = sum;
   };
 
+  let data = {
+    allItems: {
+      exp: [],
+      inc: []
+    },
+    totals: {
+      exp: 0,
+      inc: 0
+    },
+    budget: 0,
+    percentage: -1
+  };
+
   return {
     addItem: function(type, desc, val) {
       let newItem, ID;
 
       // ID -> unique number that we want to give to each input value
-      // [1, 2, 3, 4, 5], next ID = 6;
       // [1, 2, 4, 6, 8], next ID = 9;
       // ID = last ID + 1;
       // Create new id
@@ -106,7 +105,8 @@ let UIController = (function() {
     budgetLabel: ".budget__value",
     incomeLabel: ".budget__income--value",
     expensesLabel: ".budget__expenses--value",
-    percentageLabel: ".budget__expenses--percentage"
+    percentageLabel: ".budget__expenses--percentage",
+    container: ".container"
   };
 
   return {
@@ -123,11 +123,28 @@ let UIController = (function() {
       if (type === "inc") {
         element = DOMstrings.incomeContainer;
         html =
-          `<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`;
+          `<div class="item clearfix" id="inc-%id%">
+            <div class="item__description">%description%</div>
+            <div class="right clearfix">
+              <div class="item__value">%value%</div>
+              <div class="item__delete">
+                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+              </div>
+            </div>
+          </div>`;
       } else if (type === "exp") {
         element = DOMstrings.expensesContainer;
         html =
-          `<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>`;
+          `<div class="item clearfix" id="exp-%id%">
+            <div class="item__description">%description%</div>
+            <div class="right clearfix">
+              <div class="item__value">%value%</div>
+              <div class="item__percentage">21%</div>
+              <div class="item__delete">
+                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+              </div>
+            </div>
+          </div>`;
       }
 
       // 2. Replace placeholder text with actual data we receive from the obj
@@ -184,6 +201,9 @@ let appController = (function(budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
+
+    // Adding delete event
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
   };
 
   let updateBudget = function() {
@@ -219,9 +239,32 @@ let appController = (function(budgetCtrl, UICtrl) {
     }
   };
 
+  let ctrlDeleteItem = function(event) {
+    let itemID, splitID, type, ID;
+
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+    if (itemID) {
+
+      // inc-1 it returns an array with the type and a number
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = splitID[1];
+
+      // 1. Delete the item from the data structure
+      
+      // 2. Delete item from the UI
+
+      // 3. Update and show the new budget 
+
+
+    }
+  };
+
   return {
     init: function() {
       console.log("Application has started!");
+      // Resetting the values of the budget object when page reloads
       UICtrl.displayBudget({
         budget: 0,
         totalInc: 0,
