@@ -182,6 +182,14 @@ let UIController = (function() {
 
   };
 
+  let nodeListForEach = function(list, callback) {
+    // For loop that each time calls a callback function
+    for (let i = 0; i < list.length; i++) {
+      // we call the callback with the current item and the index as args
+      callback(list[i], i);
+    }
+  };
+
   return {
     getInput: function() {
       return {
@@ -263,14 +271,6 @@ let UIController = (function() {
 
       let fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
       
-      let nodeListForEach = function(list, callback) {
-        // For loop that each time calls a callback function
-        for (let i = 0; i < list.length; i++) {
-          // we call the callback with the current item and the index as args
-          callback(list[i], i);
-        }
-      };
-
       nodeListForEach(fields, function(current, index) {
         
         if (percentages[index] > 0) {
@@ -294,6 +294,19 @@ let UIController = (function() {
       month = now.getMonth();
 
       document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year;
+    },
+    changedType: function() {
+      let fields = document.querySelectorAll(
+        DOMstrings.inputType + ',' +
+        DOMstrings.inputDescription + ',' +
+        DOMstrings.inputValue
+        );
+
+        nodeListForEach(fields, function(current) {
+          current.classList.toggle('red-focus');
+        });
+
+        document.querySelector(DOMstrings.inputButton).classList.toggle('red');
     },
     getDOMstrings: function() {
       return DOMstrings;
@@ -320,6 +333,10 @@ let appController = (function(budgetCtrl, UICtrl) {
 
     // Adding delete event
     document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+  
+    // Changing class of the 'exp' input type
+    document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);
+  
   };
 
   let updateBudget = function() {
