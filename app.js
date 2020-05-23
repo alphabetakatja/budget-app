@@ -117,7 +117,7 @@ let budgetController = (function() {
     getPercentages: function() {
       // we are creating a new array with all of the percentages in it
       let allPercentages = data.allItems.exp.map(function(current) {
-        return current.getPercentage();
+      return current.getPercentage();
       });
       return allPercentages;
 
@@ -149,7 +149,8 @@ let UIController = (function() {
     incomeLabel: ".budget__income--value",
     expensesLabel: ".budget__expenses--value",
     percentageLabel: ".budget__expenses--percentage",
-    container: ".container"
+    container: ".container",
+    expensesPercLabel: ".item__percentage"
   };
 
   return {
@@ -182,7 +183,7 @@ let UIController = (function() {
             <div class="item__description">%description%</div>
             <div class="right clearfix">
               <div class="item__value">%value%</div>
-              <div class="item__percentage">21%</div>
+              <div class="item__percentage"></div>
               <div class="item__delete">
                 <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
               </div>
@@ -226,6 +227,29 @@ let UIController = (function() {
       } else {
         document.querySelector(DOMstrings.percentageLabel).textContent = '---';
       }
+    },
+    displayPercentages: function(percentages) {
+
+      let fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
+      
+      let nodeListForEach = function(list, callback) {
+        // For loop that each time calls a callback function
+        for (let i = 0; i < list.length; i++) {
+          // we call the callback with the current item and the index as args
+          callback(list[i], i);
+        }
+      };
+
+      nodeListForEach(fields, function(current, index) {
+        
+        if (percentages[index] > 0) {
+          current.textContent = percentages[index] + '%';
+        } else {
+          current.textContent = '---';
+        }
+        
+      });
+
     },
     getDOMstrings: function() {
       return DOMstrings;
@@ -275,7 +299,7 @@ let appController = (function(budgetCtrl, UICtrl) {
     let percentages = budgetCtrl.getPercentages();
 
     // 3. Update the UI with new percentages
-    console.log('percentages', percentages);
+    UICtrl.displayPercentages(percentages);
 
   };
 
